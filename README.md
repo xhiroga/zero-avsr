@@ -28,16 +28,7 @@ conda create -n zero-avsr python=3.9 -y
 conda activate zero-avsr
 git clone https://github.com/JeongHun0716/zero-avsr
 cd zero-avsr
-```
-```bash
-# PyTorch and related packages
-pip install torch==2.1.2 torchvision==0.16.2 torchaudio==2.1.2 --index-url https://download.pytorch.org/whl/cu121
-pip install numpy==1.23.5 scipy opencv-python
-pip install editdistance python_speech_features einops soundfile sentencepiece tqdm tensorboard unidecode librosa pandas
-pip install omegaconf==2.0.6 hydra-core==1.0.7 #(If your pip version > 24.1, please run "python3 -m pip install --upgrade pip==24.0")
-pip install transformers peft bitsandbytes
-cd fairseq
-pip install --editable ./
+uv sync
 ```
 
 ## Preparation
@@ -68,18 +59,20 @@ More detailed information is provided in [marc](https://github.com/JeongHun0716/
 ## Load a pretrained model
 ### AV-Romanizer
 ```bash
-$ PYTHONPATH=./fairseq:./avhubert python
->>> import fairseq, stage1
->>> ckpt_path = "/path/to/the/av-romanizer-checkpoint.pt"
+$ PYTHONPATH=./fairseq:./avhubert uv run python
+>>> import fairseq, stage1, torch
+>>> ckpt_path = "/path/to/the/av-romanizer-checkpoint.pt" # ex) "pretrained_models/av-romanizer/all/checkpoint_best.pt"
+>>> torch.serialization.add_safe_globals([fairseq.data.dictionary.Dictionary])
 >>> models, cfg, task = fairseq.checkpoint_utils.load_model_ensemble_and_task([ckpt_path])
 >>> model = models[0]
 ```
 
 ### Zero-AVSR
 ```bash
-$ PYTHONPATH=./fairseq:./avhubert python
->>> import fairseq, stage2
->>> ckpt_path = "/path/to/the/zero-avsr-checkpoint.pt"
+$ PYTHONPATH=./fairseq:./avhubert uv run python
+>>> import fairseq, stage2, torch
+>>> ckpt_path = "/path/to/the/zero-avsr-checkpoint.pt"  # ex) "pretrained_models/zero-avsr/all/checkpoint_best.pt"
+>>> torch.serialization.add_safe_globals([fairseq.data.dictionary.Dictionary])
 >>> models, cfg, task = fairseq.checkpoint_utils.load_model_ensemble_and_task([ckpt_path])
 >>> model = models[0]
 ```
