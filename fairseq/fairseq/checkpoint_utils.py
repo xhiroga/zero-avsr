@@ -16,6 +16,7 @@ from typing import Any, Dict, Optional, Union
 from random import randint
 
 import torch
+from fairseq.data.dictionary import Dictionary
 from fairseq.dataclass.configs import CheckpointConfig
 from fairseq.dataclass.utils import (
     convert_namespace_to_omegaconf,
@@ -301,7 +302,8 @@ def load_checkpoint_to_cpu(path, arg_overrides=None, load_on_all_ranks=False):
         local_path = PathManager.get_local_path(path)
 
     with open(local_path, "rb") as f:
-        state = torch.load(f, map_location=torch.device("cpu"))
+        torch.serialization.add_safe_globals([Dictionary])
+        state = torch.load(f, map_location=torch.device("cpu"), weights_only=True)
 
     if "args" in state and state["args"] is not None and arg_overrides is not None:
         args = state["args"]

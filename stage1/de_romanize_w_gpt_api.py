@@ -3,7 +3,7 @@ import torch
 import requests
 import argparse
 from tqdm import tqdm
-from concurrent.futures import ProcessPoolExecutor, as_completed
+from concurrent.futures import ProcessPoolExecutor
 import editdistance
 from text_normalization.text_normalization import text_normalize
 import os
@@ -12,7 +12,7 @@ import os
 # Multiprocess
 torch.multiprocessing.set_sharing_strategy('file_system')
 
-OPENAI_KEY='<your gpt api key>'
+OPENAI_KEY=os.getenv("OPENAI_API_KEY")
 RESTORE_PROMPT = "This is the romanized <LANG> transcription '<TEXT>' \nConvert Roman Text into <LANG>. Don't answer additional text."
 
 def calculate_wer(reference, hypothesis):
@@ -71,9 +71,10 @@ def process_sample(gt_text, text, target_lang, count=1):
             dict['prediction'] = response.json()['choices'][0]['message']['content'].strip()
             
             return dict
-        except:
+        except Exception as _:
             count -= 1
-    if not done: return None
+    if not done:
+        return None
     
     return {'Ground truth': dict['Ground truth'], 'prediction': ""}
 

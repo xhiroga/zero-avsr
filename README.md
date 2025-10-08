@@ -53,7 +53,12 @@ marc/
 ```
 More detailed information is provided in [marc](https://github.com/JeongHun0716/zero-avsr/tree/main/marc)
 
+After download, path in `test.tsv` should be replaced.
 
+```bash
+export MUAVIC_ROOT=$MUAVIC_ROOT
+find marc -name 'test.tsv' -print0 | xargs -0 sed -i "s|{MUAVIC_ROOT}|${MUAVIC_ROOT}|g"
+```
 
 
 ## Load a pretrained model
@@ -90,13 +95,11 @@ To evaluate the performance of Cascaded Zero-AVSR, follow these steps:
 
 1. **Obtain a GPT API Key:**
    Here is an example that runs using GPT, subject to be required payment as per GPT's regulations.<br>
-   You need a GPT API key from OpenAI. After generating your API key, open the file:
+   You need a GPT API key from OpenAI. After generating your API key, set environment variable:
    ```bash
-   stage1/de_romanize_w_gpt_api.py
+   export OPENAI_API_KEY=<your gpt api key>
    ```
-   and locate line 15:
-   OPENAI_KEY = '<your gpt api key>'
-   Replace ```<your gpt api key>``` with your actual API key. This key is required for enabling GPT-based processing in the evaluation pipeline.
+   `<your gpt api key>` is your actual API key. This key is required for enabling GPT-based processing in the evaluation pipeline.
 
 3. **Run the Evaluation Script:**  
     Once your API key is set, execute the evaluation script by running:

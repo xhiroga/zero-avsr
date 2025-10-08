@@ -1,3 +1,6 @@
+set -euo pipefail
+trap 'exit 130' INT
+
 root=$(pwd)
 
 model_path=$root/pretrained_models/av-romanizer/all/checkpoint_best.pt # place the downloaded uroman model here
@@ -12,7 +15,7 @@ out_pth=$root/evaluation/clean/stage1/${lang}
 
 export OMP_NUM_THREADS=1
 PYTHONPATH=$fairseq_pth \
-CUDA_VISIBLE_DEVICES=0 python $root/stage1/infer.py \
+CUDA_VISIBLE_DEVICES=0 uv run $root/stage1/infer.py \
     --config-dir $root/stage1/conf/ \
     --config-name infer_common \
     decoding.type=viterbi \
@@ -49,13 +52,13 @@ elif [ "$lang" == "eng" ]; then
     target_lang=english
 fi
 
-python $root/stage1/sort_hypo_files.py \
+uv run $root/stage1/sort_hypo_files.py \
     --input_pth $out_pth/hypo.word \
     --output_pth $out_pth/sorted_hypo.word
 
 
 PYTHONPATH=$root \
-python $root/stage1/de_romanize_w_gpt_api.py \
+uv run $root/stage1/de_romanize_w_gpt_api.py \
     --gt_label $manifest_pth/test.wrd \
     --target_lang $target_lang \
     --lang $lang \
