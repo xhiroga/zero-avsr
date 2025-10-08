@@ -20,7 +20,7 @@ OUT_PATH=$ROOT/results
 
 export OMP_NUM_THREADS=1
 PYTHONPATH=$ROOT/fairseq \
-CUDA_VISIBLE_DEVICES=4 python -B $SRC_PTH/eval.py --config-dir ${SRC_PTH}/conf --config-name s2s_decode \
+CUDA_VISIBLE_DEVICES=0 uv run python -B $SRC_PTH/eval.py --config-dir ${SRC_PTH}/conf --config-name s2s_decode \
     dataset.gen_subset=test \
     common.user_dir=${SRC_PTH} \
     generation.beam=2 \

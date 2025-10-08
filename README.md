@@ -119,7 +119,13 @@ bash scripts/stage2/train.sh
 ```
 
 ### Evaluation of the Zero-AVSR
-To evaluate the performance of Zero-AVSR, execute the evaluation script by running:
+To evaluate the performance of Zero-AVSR, follow these steps:
+
+```bash
+uv run hf auth login
+```
+
+One logged in, execute the evaluation script by running:
 
 ```bash
 bash scripts/stage2/eval.sh
