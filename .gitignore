@@ -1,5 +1,6 @@
 __pycache__/
 .hydra/
+dist/
 evaluation/
 infer.log
 marc/
