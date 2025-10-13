@@ -417,7 +417,7 @@ wheels = [
 
 [[package]]
 name = "fairseq"
-version = "1.0.0a0+6206c9e"
+version = "1.0.0a0+7609cf4"
 source = { editable = "fairseq" }
 dependencies = [
     { name = "cffi" },
@@ -438,7 +438,7 @@ requires-dist = [
     { name = "dataclasses", marker = "python_full_version < '3.7'" },
     { name = "hydra-core", specifier = "<1.1" },
     { name = "numpy", marker = "python_full_version < '3.7'", specifier = "<1.20.0" },
-    { name = "numpy", marker = "python_full_version >= '3.7'" },
+    { name = "numpy", marker = "python_full_version >= '3.7'", specifier = "<1.24.0" },
     { name = "omegaconf", specifier = "<2.1" },
     { name = "regex" },
     { name = "sacrebleu", specifier = ">=1.4.12" },

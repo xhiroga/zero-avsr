@@ -215,8 +215,11 @@ class AV_RomanizerModel(BaseFairseqModel):
             "encoder_layerdrop": cfg.layerdrop,
             "feature_grad_mult": cfg.feature_grad_mult,
         }
-        root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        w2v_path = f'{root_dir}/pretrained_models/avhubert/large_vox_iter5.pt'
+        if cfg.w2v_path is not None:
+            w2v_path = cfg.w2v_path
+        else:
+            root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            w2v_path = f'{root_dir}/pretrained_models/avhubert/large_vox_iter5.pt'
         
         if cfg.w2v_args is None:
             state = checkpoint_utils.load_checkpoint_to_cpu(

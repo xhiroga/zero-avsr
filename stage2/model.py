@@ -118,7 +118,14 @@ class Zero_AVSR(BaseFairseqModel):
     @classmethod
     def build_model(cls, cfg, task):
         ## load av-romanizer ##
-        models, _, _ = checkpoint_utils.load_model_ensemble_and_task([cfg.av_romanizer_path])
+        av_arg_overrides = None
+        w2v_override = getattr(cfg, "w2v_path", None)
+        if w2v_override:
+            av_arg_overrides = {"model": {"w2v_path": w2v_override}}
+
+        models, _, _ = checkpoint_utils.load_model_ensemble_and_task(
+            [cfg.av_romanizer_path], arg_overrides=av_arg_overrides, strict=False
+        )
         av_romanizer = models[0]
         ## load llm ##
         llm_model_id = cfg.llm_path  
